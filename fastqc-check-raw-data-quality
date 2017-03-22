@@ -1,0 +1,66 @@
+Links: http://yanshouyu.blog.163.com/blog/static/214283182201302835744453/
+
+1. FastQC support files in the following formats:
+   1) FastQ (all quality encoding variants)
+   2) Casava FastQ files*
+   3) Colorspace FastQ
+   4) GZip compressed FastQ
+   5) SAM
+   6) BAM
+   7) SAM/BAM Mapped only (normally used for colorspcace data)
+
+2. The commands used:
+
+    fastqc [-o output dir] \
+		   [--(no)extract] \
+		   [-f fastq|bam|sam ]\
+		   [-c contaminant file] seqfile1 .. seqfileN
+
+	-o --outdir, Create all output files in the specified output directory
+	--(no)extract, By default this option will be set as extract, if fastqc is run in non-interactive mode
+	-f --format, Valid formats are bam,sam,bam_mapped,sam_mapped and fastq
+	-c --contaminants, 用来指定一个contaminant文件，fastqc会把overrepresented sequences往这个contaminant文件里搜索。
+		contaminant文件的格式是"Name\tSequences"，#开头的行是注释。加上 -q 会进入沉默模式，即不出现下面的提示：
+		Started analysis of target.fq
+		Approx 5% complete for target.fq
+	-t --threads, not more than 6 threads on a 32 bit machine
+
+3. Summary
+   1) Per base sequence quality
+	  Q=-10*log10(p) ---> p=0.01 Q=20
+	  read-->middle   
+	  blue--->mean
+	  WARN: 若任一位置的下四分位数低于10或中位数低于25
+	  FAIL: 若任一位置的下四分位数低于5或中位数低于20
+   2) Per Sequence Quality Scores
+      WARN: 当峰值小于27（错误率0.2%）
+	  FAIL: 当峰值小于20（错误率1%）
+   3) Per Base Sequence Content
+      WARN: 当任一位置的A/T比例与G/C比例相差超过10%
+	  FAIL: 当任一位置的A/T比例与G/C比例相差超过20%
+   4) Per Base GC Content
+      WARN: 当任一位置的GC含量偏离均值的5%时
+	  FAIL: 当任一位置的GC含量偏离均值的10%时
+   5) Per Sequence GC Content
+      WARN: 偏离理论分布的reads超过15%时
+      FAIL: 偏离理论分布的reads超过30%时
+   6) Per Base N Content
+      WARN: 当任意位置的N的比例超过5%
+	  FAIL: 当任意位置的N的比例超过20%
+   7) Sequence Length Distribution
+      WARN: 当reads长度不一致时
+	  FAIL: 当有长度为0的read时
+   8) Duplicate Sequences
+      WARN: 当非unique的reads占总数的比例大于20%时
+	  FAIL: 当非unique的reads占总数的比例大于50%时
+   9) Overrepresented Sequences
+      WARN: 当发现超过总reads数0.1%的reads时
+	  FAIL: 当发现超过总reads数1%的reads时
+  10) Overrepresented Kmers
+      如果某k个bp的短序列在reads中大量出现，其频率高于统计期望的话，fastqc将其记为over-represented k-mer。
+	  默认的k = 5，可以用-k --kmers选项来调节，范围是2-10。
+	  出现频率总体上3倍于期望或是在某位置上5倍于期望的k-mer被认为是over-represented。
+	  fastqc除了列出所有over-represented k-mers，还会把前6个的per base distribution画出来。
+	  WARN: 当有出现频率总体上3倍于期望或是在某位置上5倍于期望的k-mer时
+	  FAIL: 当有出现频率在某位置上10倍于期望的k-mer时
+
