@@ -1,0 +1,14 @@
+1. hisat2 input file format
+   input files are FASTQ .fq/.fastq (default)
+
+2. hisat2 commands
+
+   hisat2 [options]* -x <ht2-idx> { -1 <m1> -2 <m2> | -U <r> | --sra-acc <SRA accession number>} [-S <sam>]
+   
+   <ht2-idx>  Index filename prefix (minus trailing .X.ht2).
+   <m1>       Files with #1 mates, paired with files in <m2>. Could be gzip'ed (extension: .gz) or bzip2'ed (extension: .bz2).
+   <m2>       Files with #2 mates, paired with files in <m1>. Could be gzip'ed (extension: .gz) or bzip2'ed (extension: .bz2).
+   -p/--threads <int> number of alignment threads to launch (1) (default: 1)
+   <r>        Files with unpaired reads. Could be gzip'ed (extension: .gz) or bzip2'ed (extension: .bz2).
+   <sam>      File for SAM output (default: stdout)
+

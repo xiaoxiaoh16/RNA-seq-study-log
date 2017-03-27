@@ -1,0 +1,18 @@
+1. download software from https://trace.ncbi.nlm.nih.gov/Traces/sra/sra.cgi?cmd=show&f=software&m=software&s=software
+
+2. sratoolkit usage:
+   fastq-dump.2.3.5 [options] <path> [<path>...]
+   --split-spot Split spots into individual reads
+   --split-files Dump each read into separate file.Files will receive suffix corresponding to read number
+   --split-3 Legacy 3-file splitting for mate-pairs: First biological reads satisfying dumping conditions are placed in files *_1.fastq and *_2.fastq 
+             If only one biological read is present it is placed in *.fastq Biological reads and above are ignored. 
+  --gzip Compress output using gzip
+  --bzip2 Compress output using bzip2 
+
+
+  Example:
+    
+   wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR126/002/SRR1264612/SRR1264612.sra
+   fastq-dump.2.5.7 SRR1264614 --split-spot --split-files 
+   ~/biosoft/sratoolkit/sratoolkit.2.6.3-centos_linux64/bin/fastq-dump –split-3 
+
